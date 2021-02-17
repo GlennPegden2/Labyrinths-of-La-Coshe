@@ -1,0 +1,352 @@
+Arrays
+------
+
+O(x) Is an array of object locations. 
+The value of O(x) is its location. Room No 99 is the inventory
+x is the Object Number
+
+Percentage Variables
+--------------------
+A% = Line to goto if N is input
+B% = Line to goto if S is input
+C% = Line to goto if E is input
+D% = Line to goto if W is input
+E% = Line to goto if U is input
+F% = Line to goto if D is input
+H% is temp ?
+M% is temp ?
+R% is the current room
+S% is location of furtive figure
+X% = ? 
+Z% is linenumber to jump to (room number * 10 + 1000)
+ 
+AL% = ?
+BV% = ?
+GV% = ?
+LD% is set is the lamp is dead
+RP% = ?
+SC% = Score
+TU% = Number of turns taken
+WT% = Weight carried
+
+BOL% ?
+BUB% ?
+BUS% Somethig to do with the bust of ulyses
+CAN% is set if the candle is out
+COM% is the number of attempts taken to open the safe
+CRY% is set if the Crystal Bridge is in place
+CYC% is set if the cyclops is dead
+DAY% room is daylight (lamp not required)
+DIG% = ?
+DUM% = ? - Random at startup
+ECO% defines wether room 17 echos
+ECH% ?
+EGG% ?
+EXO% Exorcism performed ?
+GLA% is set if the ice (glacier) has melted
+GTG% is set up grate is unlocked
+JUM% ?
+KIC% ?
+LAM% is set if lamp is on
+LEA% is set if leaves have been moved
+MAG% ?
+MIR% define wether mirror has been rubbed
+OTT% is set once youve been through waterfall
+OUT% is number of turns the lamp has been on, lamp goes out after 99 turns
+PIT% is number of turns youve been in a pit (>2 = death, 0 = Not in pit)
+RID% is set when the WELL riddle is solved
+ROU% ?
+SAF% is set if the safe is open
+THI% Something to do with thief
+TRO% ? SOmething todo with Troll
+
+
+String Variables
+----------------
+A$ = Encypted message to pointer list (see decrypting, below)
+I$ = Input String
+L$ = Second word of parsed input (normally object)
+L1$ =?
+O$ = ?
+V$ = ?
+W$ = String of phrases, pointed to by A$
+Z$ = String of common phrases, pointed to by A$
+
+Room Numbers
+------------
+
+1 Small Clearing	N2   S6   E4 W3 	      DAY 
+2 Thick Forest		N3   S1   E4 W5 	      DAY 
+3 Hollow		N7   S6   E1 W2         [D56] DAY 
+	LEA% and GTG% are checked to determine if down is available
+	MOVe LEAves works here 
+4 Thick Forest 2	N6   S7   E2        U1        DAY  
+5 Large Tree		N2   S5   E5        U88	      DAY
+6 Thick Forest 3	N1   S7   E4   W3	      DAY	
+7 Near Running Water	N4   S8   E6   W3             DAY
+8 Waterfall		          E7		      DAY	
+  THROU WAT transports 9
+9 Behind Waterfall	          E11       U11 [D63] DAY
+  THROU WAT transports 8
+  D63 available is CYC%=1
+  E only possible if WT%=0 
+10 Oval Chamber w/hole  			 D9   DAY
+11 Stalagtite Cave	     S13  E12  W9	      DARK	
+   W only possible if WT%=0
+12 Bloodstained Floor  [N30][S42][E55] W11      [D48] 
+   NSED Only if TRO%
+13 N-W Rocky Crawlway             E14  W15
+14 Small Cave		     S13	
+15 SQR Room w/mirror	N16  S55       W13    		
+	RUB works. May transport to room 59 
+16 N/S Crawlway		N19  B15  E17
+17 Echo Room		N16  S18  E20  W19
+18 Dead End			  E17
+19 ULYSSES Bust		N17            W16 [U29]		
+   U is available if BUS%=1
+20 Draughty Cave	N17            W21 U24
+   Candles get blown out if you are carrying them
+21 Pedestal		N20       E22    
+22 West Large Temple	     S21  E23
+23 East Large Temple		       W22
+24 Chilly Chamber	     S20       W25 	 D26
+25 Dead End.		N24
+26 Entrance to Hades	               W24 	[D27]
+   D is available if EXO%=1
+27 Hades		          E26      	[D28]
+   D is avilable only if SC% (score) > 375
+28 In Tomb (finish?)  Good finish if < 136 Turns taken
+29 Kitchen			  E98           [D19]
+   D only available if BUS%=1
+30 Maze			N31  S32         	 D35
+31 Maze			N34  	  E30  W48   	 D32
+32 Maze	     		     S31  E34  W30       D33
+33 Dead End		N32
+34 Maze			N32  S31       W35
+35 Maze			     S36       W30  U34
+36 Maze			N37       E35  W37
+37 Maze			     S26  E37  W37  U38  D36
+38 Maze			     S38  E37  W38  E40  D39	
+39 Dead End		     S34	
+40 Cyclops Room		N38 [S63]		[D41]
+	ULY works here !
+41 Thiefs Lair
+	egg has special conditions here, can be opened ?
+42 Hello Sailor		     S43  E48  W12
+43 Riddle Room		N42           [W44] 
+	WEL opens W44
+44 	
+49	[S50]
+	THROW TORch melts the ice
+51
+	THROW ROPe 
+59 		
+	RUB works (There is a mirror here ?). May transport to room 15 
+65	DIG works (x 3 for object 24 !)
+78	[N79]
+	OFF SWO does something (must be carry SWO (sword ?))
+79	[S78]
+	OFF SWO  does something  (must be carry SWO (sword ?))
+
+88 Up tree 
+99 Inventory
+103 Combination Room
+	Type in your score to open safe (SAF%)
+	Lock does something after four attempts (COM%)
+105 
+	THROU CUR works (transport to 107 )
+107
+	THROU WAL works (transport to 105 )
+
+Objects
+-------
+Ob Number Ob Name       Start Room
+
+1 Shiney Brass Lamp	9
+2 Coil Of Rope		24
+3 Sword of Great Age	9
+4 Brass Bell		22
+5 Black Boot			23
+6 Pair of Candles 	23
+7 Sharp Knife		18
+8 Box Of Matches	29
+9 Short Plastic Pole	33
+10 Bunch Of Keys 	36
+11 Small Spade		54
+12 A Wrench 		67
+13 A Pile Of Wood	93
+14 Skin of Wine		42
+15 Porcelin Egg		88
+16 Tiny Jewel Bird 	0 (inside 15)
+17 Gold Coffin		14
+18 Beutiful Grail	21
+19 Platinum Bar 	17
+20 Rope Of Pearls	44
+21 Crystal Goblet	0
+22 Jade Figure		50
+23 Flaming Ivory Torch	52
+24 Golden Shield	0
+25 Silver Ingot		0
+26 Bag Of Emeralds 	36
+27 Silver Chalice	0
+28 Trunk of Jewel	70
+29 Red Ruby		72
+30 Saphire Ring		61
+31 Large Opal		87
+32 Rare Stamp		89
+33 Diamond Brooch	0 (103 once safe is open)
+34 Jeweled Trident	79
+35 Pile of Doubloons	107
+36 Rare Painting	106
+37 Golden Fleece	73
+38 Necklace Of Numbers	4
+
+Dicitionary
+-----------
+
+3 char and above ones are encypter by incramenting char 1 by 1 and 
+decramenting char two by 1, subsequent chars are unaltered.
+lowercase chars are options
+
+I
+L
+N
+S
+E
+W
+U
+D
+IN
+ON
+WEL
+THROU
+ULY
+HEL
+OFF
+THROW
+DIG
+LOC
+EXO
+RIN
+REA
+KIL
+OUT
+PUS
+OPE
+LIG
+GIV
+KIC
+TUR
+UNL
+TIE
+WAV
+MOV
+RUB
+TAK
+DRO
+JUM
+
+Score
+-----
+
+RUBbing MIRror 			5
+Opening safe  (Room 103)	5
+WEL ? (Room 43)			5
+ULY ? Cyclops (Room 40)		10 
+OFF SWO to Open the Crystal Bridge (Room 78/79)	5
+THROWing TORch (Room 49)	-7 !
+Getting THROU waterfall		10
+
+String Lists
+------------
+
+Z$ (Common words ?)
+A A A 
+B B IS 
+C B IN
+D B AT
+E B TO
+F B UP
+G B OF
+H C THE
+I C YOU
+J C ARE
+K C AND
+L D HERE
+M E NORTH
+N E SOUTH
+O D EAST
+P D WEST
+Q D DOWN
+R D THIS
+S D WITH
+T E SMALL
+U E LARGE
+V E THERE
+W E EXITS
+
+Common Subroutines
+------------------
+
+9960 - L$ = second parameter
+9000 - Unencrypt A$ and print it
+
+Misc
+----
+
+Entering your Name (NAM$) as SUPREME CHEATER sets NAM$="HYJL"
+
+Decrypting
+----------
+
+Within A$ A-Z are in pairs, first char is pointer to appropriate W$, calculated on the following formula
+where x is the first char
+((ASC(x) - 64)*10) + 9690
+The second char is the number of phrases into W$ the phrase is. 
+
+VH VK VL -# < FK VM:
+|| || ||    |___ <CR>
+|| ||_||____ As VH
+||___ [72] -64 = 8 = Number of words into string  
+|___ [86] -64 = 22 : 9690 + 22*10 = 9910 = Line that sets W$
+
+     ; = .
+     : = End of string
+     < = <CR>
+     < 65 and not 58,59,60 (uses z$, see below)
+
+If the value is less than < 65 and not 58,59,60 then Z$ is used instead of W$. 
+Z$ contains simple, short words.
+
+W$ is many phrases concatenated, each phrase is separated by an ascii char denoting how long
+the phrase is (A = 1, B=2 etc) 
+
+
+e.g.
+
+Value for W$=
+GWELCOMEYLOVELY OPEN PORCELAIN EGGYYOU ARE IN A THICK FORESTUWITH TREES ALL AROUNDRYOU HAVE ENTERED AWTHE ONLY EXIT IS TO THELYOU ARE IN AJTHERE IS AVTHERE ARE EXITS TO THEONOTHING HAPPENSHRUMBLINGENOISEGLURCHESDMOVECTOO
+
+|----- Value for first char
+| |---- Length of phrase
+| | |--- Phrase
+V V V
+A G WELCOME
+B Y LOVELY OPEN PORCELAIN EGG
+C Y YOU ARE IN A THICK FOREST
+D U WITH TREES ALL AROUND
+E R YOU HAVE ENTERED A
+F W THE ONLY EXIT IS TO THE
+G L YOU ARE IN A
+H J THERE IS A
+I V THERE ARE EXITS TO THE
+J O NOTHING HAPPENS
+K H RUMBLING
+L E NOISE
+M G LURCHES
+N D MOVE
+O C TOO
+
+
+15 1590
+1150
